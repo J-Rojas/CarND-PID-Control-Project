@@ -35,7 +35,11 @@ int main()
   PID pid;
   //The values here were hand-tuned. The P term helps correct the car's direction on sharp turns. The D term helps
 	// smooth out over-corrections after sharp terms into straight-aways. The I term helps stabilize the motion along
-	// a long turn or straight away by reducing the bias.
+	// a long turn or straight away by reducing the bias. I adjusted each value independently based on it's performance
+	// in the simulator through turns and straightways until I found a balanced set.
+
+	// I attempted to use twiddler to optimize even further, but was unsuccessful. It appears to find local minimum based
+	// on the current environment (a sudden large turn for example) but not values that work across changing track conditions.
 	pid.Init(0.1, 0.002, 1.0);
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
