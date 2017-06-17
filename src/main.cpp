@@ -33,7 +33,9 @@ int main()
   uWS::Hub h;
 
   PID pid;
-  // TODO: Initialize the pid variable.
+  //The values here were hand-tuned. The P term helps correct the car's direction on sharp turns. The D term helps
+	// smooth out over-corrections after sharp terms into straight-aways. The I term helps stabilize the motion along
+	// a long turn or straight away by reducing the bias.
 	pid.Init(0.1, 0.002, 1.0);
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {

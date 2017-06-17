@@ -86,6 +86,9 @@ void PID::Init(double Kp, double Ki, double Kd) {
 }
 
 void PID::UpdateError(double cte) {
+	// I attempted to use twiddle for optimizing larger errors, however was not successful. Twiddle seems to not handle
+	// changing environmental conditions very well and gets stuck in suboptimal local minimums.
+
 	//if (cte > 0.75 || cte < -0.75)
 	//	twiddler.twiddle(*this, cte);
 
@@ -95,7 +98,8 @@ void PID::UpdateError(double cte) {
 		this->d_error = cte - this->p_error;
 	this->p_error = cte;
 	this->i_error += cte;
-	//subtract the mean value from total per frame, this limits the
+	//subtract the mean value from total per frame, this limits the integral to a smaller local window of MAX_INT_FRAMES samples
+	//allowing the I term to adjust it's influence to changing conditions quicker
 	this->i_error -= this->i_error / MAX_INT_FRAMES;
 	//std::cout << "p_error " << this->p_error << ", i_error " << this->i_error << ", d_error " << this->d_error << std::endl;
 }
